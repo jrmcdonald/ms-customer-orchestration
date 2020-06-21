@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ms-customer-orchestration
+
+---
+spring:
+  profiles: local,unit-test,functional-test
+  cloud:
+    kubernetes:
+      enabled: false

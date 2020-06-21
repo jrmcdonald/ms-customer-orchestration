@@ -1,0 +1,110 @@
+name: build
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - '*'
+      - '*/*'
+
+jobs:
+  build:
+
+    if: contains(toJson(github.event.commits), '[skip ci]') == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 50
+      - run: |
+          git fetch --no-tags --prune --depth=1 origin main
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: Set up Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Yarn Audit
+        run: |
+          yarn install --frozen-lockfile
+          yarn audit
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up Gradle
+        run: chmod +x gradlew
+
+      - name: Build
+        run: ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set PR Number
+        if: github.event_name == 'pull_request'
+        run: |
+          export PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          export PR_NUMBER_OPT="-Dsonar.pullrequest.key=${PR_NUMBER}"
+          echo "::set-env name=PR_NUMBER_OPT::${PR_NUMBER_OPT}"
+
+      - name: Set Branch Name
+        if: github.event_name != 'pull_request'
+        run: |
+          export BRANCH_NAME=$(git branch --show-current)
+          export BRANCH_NAME_OPT="-Dsonar.branch.name=${BRANCH_NAME}"
+          echo "::set-env name=BRANCH_NAME_OPT::${BRANCH_NAME_OPT}"
+
+      - name: Sonar
+        run: ./gradlew sonarqube -Dsonar.login=${{ secrets.SONAR_LOGIN }} ${BRANCH_NAME_OPT} ${PR_NUMBER_OPT} --info
+
+      - name: Docker Build
+        run: ./gradlew customer-orchestration-endpoints:customer-orchestration-rest-api:bootBuildImage --imageName build:latest
+
+      - name: Docker Scan
+        uses: anchore/scan-action@master
+        with:
+          image-reference: "build:latest"
+          fail-build: true
+
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic
+        with:
+          extra_plugins: |
+            gradle-semantic-release-plugin
+            @semantic-release/exec
+            @semantic-release/git
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+
+      - name: Docker Release
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          ./gradlew customer-orchestration-endpoints:customer-orchestration-rest-api:bootBuildImage
+          docker login -u jrmcdonald -p ${{ secrets.DOCKER_IO_TOKEN }}
+          docker push docker.io/jrmcdonald/ms-customer-orchestration:${{ steps.semantic.outputs.new_release_version }}
+
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: reports
+          path: build/reports

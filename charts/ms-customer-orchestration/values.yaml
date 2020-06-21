@@ -1,0 +1,5 @@
+ingress:
+  hosts:
+    - host: kube.local
+      paths: ["/customer-orchestration"]
+  tls: []

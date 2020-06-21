@@ -1,0 +1,45 @@
+spotbugs {
+    toolVersion.set("${spotbugsToolVersion}")
+}
+
+spotbugsMain {
+    reports {
+        xml.enabled(false)
+        html.enabled(true)
+    }
+}
+
+jacoco {
+    toolVersion = "${jacocoToolVersion}"
+}
+
+tasks.register("codeCoverageReport", JacocoReport) {
+    subprojects { subproject ->
+        subproject.plugins.withType(JacocoPlugin).configureEach {
+            subproject.tasks.matching({ t -> t.extensions.findByType(JacocoTaskExtension) }).configureEach { testTask ->
+                sourceSets subproject.sourceSets.main
+                executionData(testTask)
+            }
+            subproject.tasks.matching({ t -> t.extensions.findByType(JacocoTaskExtension) }).forEach {
+                rootProject.tasks.codeCoverageReport.dependsOn(it)
+            }
+        }
+    }
+
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+test.finalizedBy codeCoverageReport
+check.dependsOn codeCoverageReport
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "jrmcdonald_ms-customer-orchestration"
+        property "sonar.organization", "jrmcdonald"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/jacoco/codeCoverageReport/codeCoverageReport.xml"
+    }
+}
+tasks.sonarqube.mustRunAfter codeCoverageReport

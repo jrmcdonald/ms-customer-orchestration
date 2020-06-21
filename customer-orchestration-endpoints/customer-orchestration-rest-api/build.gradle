@@ -1,0 +1,62 @@
+plugins {
+    id 'jacoco'
+    id 'maven-publish'
+}
+
+dependencies {
+    api project(':customer-orchestration-core')
+
+    implementation 'com.jrmcdonald:ms-common-ext-spring-core-oauth2'
+    implementation 'com.jrmcdonald:ms-common-ext-spring-datetime'
+    implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-context'
+    implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-filter'
+    implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-oauth2'
+    implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-security'
+    implementation 'com.jrmcdonald:ms-common-schema-definition'
+
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'net.logstash.logback:logstash-logback-encoder'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-starter-kubernetes-all'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'org.springframework.security:spring-security-config'
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+    implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+
+    testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    testImplementation "io.projectreactor:reactor-test"
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = true
+}
+
+bootBuildImage {
+    imageName = "jrmcdonald/ms-customer-orchestration:${project.version}"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/jrmcdonald/ifsc-ical-generator")
+            credentials {
+                username = "jrmcdonald"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        bootJava(MavenPublication) {
+            artifact bootJar
+        }
+    }
+}

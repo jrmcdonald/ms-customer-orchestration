@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: ms-customer-orchestration
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+  main:
+    banner-mode: off
+  security:
+    oauth2:
+      client:
+        registration:
+          auth0:
+            authorization-grant-type: client_credentials
+            client-id: dummy-value
+            client-secret: dummy-value
+            scope: read:customer,create:customer
+        provider:
+          auth0:
+            token-uri: https://qwyck.eu.auth0.com/oauth/token
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+customer:
+  entity:
+    service-url: http://ms-customer-entity:8080
+    service-endpoint: /customer-entity/v1/customer/{id}
