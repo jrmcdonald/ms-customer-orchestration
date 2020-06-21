@@ -24,7 +24,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 50
       - run: |
-          git fetch --no-tags --prune --depth=1 origin master
+          git fetch --no-tags --prune --depth=1 origin main
 
       - uses: actions/cache@v1
         with:
