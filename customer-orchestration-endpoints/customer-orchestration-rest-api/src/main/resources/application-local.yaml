@@ -1,0 +1,4 @@
+customer:
+  entity:
+    service-url: http://localhost:8081
+    service-endpoint: /v1/customer/{id}

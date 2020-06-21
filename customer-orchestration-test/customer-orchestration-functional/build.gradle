@@ -1,0 +1,15 @@
+plugins {
+    id 'jacoco'
+    id 'java-test-fixtures'
+}
+
+dependencies {
+    implementation project(':customer-orchestration-endpoints:customer-orchestration-rest-api')
+
+    testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    testImplementation 'com.squareup.okhttp3:okhttp'
+    testImplementation 'com.squareup.okhttp3:mockwebserver'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.security:spring-security-test'
+}

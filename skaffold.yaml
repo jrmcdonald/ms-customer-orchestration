@@ -1,0 +1,26 @@
+apiVersion: skaffold/v2beta1
+kind: Config
+metadata:
+  name:
+build:
+  artifacts:
+    - image: jrmcdonald/ms-customer-orchestration
+      custom:
+        buildCommand: ./scripts/docker-build.sh
+        dependencies:
+          paths:
+            - .
+deploy:
+  helm:
+    releases:
+      - name: ms-customer-orchestration
+        namespace: dev
+        chartPath: qwyck/ms-customer-orchestration
+        imageStrategy:
+          helm:
+            explicitRegistry: false
+        remote: true
+        values:
+          image: jrmcdonald/ms-customer-orchestration
+        valuesFiles:
+          - charts/ms-customer-orchestration/values.yaml
