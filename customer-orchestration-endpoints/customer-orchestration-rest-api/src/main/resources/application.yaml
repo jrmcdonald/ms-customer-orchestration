@@ -28,5 +28,5 @@ management:
 
 customer:
   entity:
-    service-url: http://ms-customer-entity:8080
+    service-url: http://ms-customer-entity.prod
     service-endpoint: /customer-entity/v1/customer/{id}
