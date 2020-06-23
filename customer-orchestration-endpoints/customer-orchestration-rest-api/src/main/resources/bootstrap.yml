@@ -1,7 +1,11 @@
 spring:
   application:
     name: ms-customer-orchestration
-
+  cloud:
+    kubernetes:
+      secrets:
+        enabled: true
+        paths: /etc/secrets
 ---
 spring:
   profiles: local,unit-test,functional-test
