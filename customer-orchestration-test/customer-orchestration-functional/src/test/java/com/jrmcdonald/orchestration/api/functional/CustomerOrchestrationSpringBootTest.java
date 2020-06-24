@@ -71,7 +71,6 @@ public class CustomerOrchestrationSpringBootTest {
         tokenResponse.setBody(objectMapper.writeValueAsString(new TokenResponse()));
 
         mockAuth0Server.enqueue(tokenResponse);
-        mockAuth0Server.enqueue(tokenResponse);
     }
 
     @AfterEach
@@ -85,6 +84,7 @@ public class CustomerOrchestrationSpringBootTest {
 
         private final String token_type = "Bearer";
         private final String access_token = "some-token-value";
+        private final long expires_in = 3600;
     }
 
     @DisplayName("GET /v1/customer/self Tests")
