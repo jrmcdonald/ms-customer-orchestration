@@ -7,6 +7,7 @@ dependencies {
     api project(':customer-orchestration-core')
 
     implementation 'com.jrmcdonald:ms-common-ext-spring-core-oauth2'
+    implementation 'com.jrmcdonald:ms-common-ext-spring-core-openapi'
     implementation 'com.jrmcdonald:ms-common-ext-spring-datetime'
     implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-context'
     implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-filter'
@@ -16,6 +17,8 @@ dependencies {
 
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'net.logstash.logback:logstash-logback-encoder'
+    implementation "org.springdoc:springdoc-openapi-security"
+    implementation "org.springdoc:springdoc-openapi-webflux-ui"
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'

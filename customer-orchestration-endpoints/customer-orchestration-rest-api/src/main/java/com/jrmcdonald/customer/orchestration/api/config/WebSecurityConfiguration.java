@@ -13,6 +13,7 @@ public class WebSecurityConfiguration {
         http.authorizeExchange()
             .pathMatchers("/v1/customer/**").authenticated()
             .pathMatchers("/actuator/**").permitAll()
+            .pathMatchers("/v3/api-docs/**", "/webjars/swagger-ui/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             .pathMatchers("/**").denyAll()
             .and()
             .csrf().disable()
