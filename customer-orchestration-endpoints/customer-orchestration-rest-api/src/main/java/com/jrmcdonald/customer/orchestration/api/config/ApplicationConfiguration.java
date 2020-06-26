@@ -1,6 +1,7 @@
 package com.jrmcdonald.customer.orchestration.api.config;
 
 import com.jrmcdonald.common.ext.spring.core.oauth2.config.JwtValidatorConfiguration;
+import com.jrmcdonald.common.ext.spring.core.openapi.config.OpenApiConfiguration;
 import com.jrmcdonald.common.ext.spring.datetime.config.DateTimeConfiguration;
 import com.jrmcdonald.common.ext.spring.reactive.context.config.ReactiveContextLifterConfiguration;
 import com.jrmcdonald.common.ext.spring.reactive.filter.config.ReactiveFilterConfiguration;
@@ -22,6 +23,7 @@ import javax.annotation.PostConstruct;
 @Import({
         CustomerEntityClientConfiguration.class,
         DateTimeConfiguration.class,
+        OpenApiConfiguration.class,
         JwtValidatorConfiguration.class,
         ReactiveContextLifterConfiguration.class,
         ReactiveClientCredentialsConfiguration.class,

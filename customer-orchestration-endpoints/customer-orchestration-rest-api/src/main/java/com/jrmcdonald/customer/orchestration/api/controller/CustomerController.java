@@ -2,6 +2,7 @@ package com.jrmcdonald.customer.orchestration.api.controller;
 
 import com.jrmcdonald.common.schema.definition.exception.ConflictException;
 import com.jrmcdonald.common.schema.definition.exception.NotFoundException;
+import com.jrmcdonald.customer.orchestration.api.doc.CustomerApi;
 import com.jrmcdonald.customer.orchestration.api.model.CustomerRequest;
 import com.jrmcdonald.customer.orchestration.api.model.CustomerResponse;
 import com.jrmcdonald.customer.orchestration.api.service.CustomerService;
@@ -25,12 +26,13 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/customer")
-public class CustomerController {
+public class CustomerController implements CustomerApi {
 
     private final CustomerService customerService;
 
     @Timed
     @GetMapping(path = "/self", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public Mono<ResponseEntity<CustomerResponse>> getCustomer() {
         return customerService.getCustomer()
                               .map(ResponseEntity::ok)
@@ -46,9 +48,10 @@ public class CustomerController {
 
     @Timed
     @PostMapping(path = "/self", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public Mono<ResponseEntity<CustomerResponse>> createCustomer(@RequestBody CustomerRequest customerRequest) {
         return customerService.createCustomer(customerRequest)
-                              .map(ResponseEntity::ok)
+                              .map(ResponseEntity::ok) // TODO: this should be created really
                               .onErrorResume(e -> {
                                   if (e instanceof ConflictException) {
                                       return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());

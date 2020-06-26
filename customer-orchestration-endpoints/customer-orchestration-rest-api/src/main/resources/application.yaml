@@ -30,3 +30,8 @@ customer:
   entity:
     service-url: http://ms-customer-entity.prod
     service-endpoint: /customer-entity/v1/customer/{id}
+
+openapi:
+  title: Customer Orchestration
+  description: Customer Orchestration API
+  version: 1.0.0
