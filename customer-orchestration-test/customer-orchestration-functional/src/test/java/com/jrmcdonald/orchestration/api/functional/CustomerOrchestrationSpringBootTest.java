@@ -202,7 +202,8 @@ public class CustomerOrchestrationSpringBootTest {
                                                          .accept(MediaType.APPLICATION_JSON)
                                                          .bodyValue(newCustomer)
                                                          .exchange()
-                                                         .expectStatus().isOk()
+                                                         .expectStatus().isCreated()
+                                                         .expectHeader().valueEquals(HttpHeaders.LOCATION, CUSTOMER_ORCHESTRATION_ENDPOINT)
                                                          .returnResult(CustomerResponse.class)
                                                          .getResponseBody();
 
