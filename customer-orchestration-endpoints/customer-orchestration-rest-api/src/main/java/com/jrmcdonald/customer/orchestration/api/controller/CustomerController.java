@@ -12,6 +12,7 @@ import io.micrometer.core.annotation.Timed;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,9 +50,9 @@ public class CustomerController implements CustomerApi {
     @Timed
     @PostMapping(path = "/self", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Override
-    public Mono<ResponseEntity<CustomerResponse>> createCustomer(@RequestBody CustomerRequest customerRequest) {
+    public Mono<ResponseEntity<CustomerResponse>> createCustomer(@RequestBody CustomerRequest customerRequest, ServerHttpRequest serverHttpRequest) {
         return customerService.createCustomer(customerRequest)
-                              .map(ResponseEntity::ok) // TODO: this should be created really
+                              .map(customerResponse -> ResponseEntity.created(serverHttpRequest.getURI()).body(customerResponse))
                               .onErrorResume(e -> {
                                   if (e instanceof ConflictException) {
                                       return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).build());

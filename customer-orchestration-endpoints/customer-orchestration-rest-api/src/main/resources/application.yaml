@@ -34,4 +34,4 @@ customer:
 openapi:
   title: Customer Orchestration
   description: Customer Orchestration API
-  version: 1.0.0
+  version: 1.0.1
