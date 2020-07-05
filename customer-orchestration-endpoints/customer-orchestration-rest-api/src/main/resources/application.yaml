@@ -20,17 +20,6 @@ spring:
           auth0:
             token-uri: https://qwyck.eu.auth0.com/oauth/token
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-
-customer:
-  entity:
-    service-url: http://ms-customer-entity.prod
-    service-endpoint: /customer-entity/v1/customer/{id}
-
 openapi:
   title: Customer Orchestration
   description: Customer Orchestration API
