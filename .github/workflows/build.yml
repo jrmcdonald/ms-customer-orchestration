@@ -11,6 +11,9 @@ on:
       - '*'
       - '*/*'
 
+env:
+  slack-channel: 'status-ci-cd'
+
 jobs:
   build:
 
@@ -19,6 +22,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Notify Slack Started
+        uses: voxmedia/github-action-slack-notify-build@v1
+        id: slack
+        with:
+          channel: ${{ env.slack-channel }}
+          status: BUILD STARTED
+          color: warning
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
@@ -110,3 +123,25 @@ jobs:
         with:
           name: reports
           path: build/reports
+
+      - name: Notify Slack Success
+        if: success()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          message_id: ${{ steps.slack.outputs.message_id }}
+          channel: ${{ env.slack-channel }}
+          status: BUILD SUCCESS
+          color: good
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Notify Slack Failed
+        if: failure()
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          message_id: ${{ steps.slack.outputs.message_id }}
+          channel: ${{ env.slack-channel }}
+          status: BUILD FAILED
+          color: danger
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
