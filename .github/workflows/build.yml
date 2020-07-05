@@ -61,7 +61,7 @@ jobs:
       - name: Yarn Audit
         run: |
           yarn install --frozen-lockfile
-          yarn audit
+          bash scripts/yarn-audit.sh
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
