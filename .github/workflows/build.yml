@@ -58,10 +58,11 @@ jobs:
         with:
           node-version: '12.x'
 
+      - name: Yarn Install
+        run: yarn install --frozen-lockfile
+
       - name: Yarn Audit
-        run: |
-          yarn install --frozen-lockfile
-          bash scripts/yarn-audit.sh
+        uses: jrmcdonald/yarn-audit-action@main
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
