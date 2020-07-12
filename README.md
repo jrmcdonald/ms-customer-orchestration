@@ -45,13 +45,13 @@ To run the service in a kubernetes cluster (with hot reloading):
 > `skaffold dev --force=false`
 
 ### Sample Requests
-Request an access token from Auth0 and export it to the `BEAERER_TOKEN` environment variable.
+Request an access token from Auth0 and export it to the `BEARER_TOKEN` environment variable.
 
 Register a customer:
 
-> `curl -i -X POST http://localhost:8080/v1/customer/self -H "Authorization: Beaer ${BEARER_TOKEN}" -H "Content-Type: application/json" -d '{"firstName": "first", "lastName": "last"}'` 
+> `curl -i -X POST http://localhost:8080/v1/customer/self -H "Authorization: Bearer ${BEARER_TOKEN}" -H "Content-Type: application/json" -d '{"firstName": "first", "lastName": "last"}'` 
 
 Retrieve a customer:
  
-> `curl -i http://localhost:8080/v1/customer/self -H "Authorization: Beaer ${BEARER_TOKEN}"` 
+> `curl -i http://localhost:8080/v1/customer/self -H "Authorization: Bearer ${BEARER_TOKEN}"` 
 
