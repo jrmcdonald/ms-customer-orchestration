@@ -3,6 +3,8 @@ spring:
     name: ms-customer-orchestration
   cloud:
     kubernetes:
+      reload:
+        enabled: true
       secrets:
         enabled: true
         paths: /etc/secrets

@@ -1,12 +1,10 @@
 spring:
-  application:
-    name: ms-customer-orchestration
-  cloud:
-    kubernetes:
-      reload:
-        enabled: true
   main:
     banner-mode: off
+
+---
+spring:
+  profiles: local,unit-test,functional-test
   security:
     oauth2:
       client:
