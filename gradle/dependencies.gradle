@@ -2,27 +2,3 @@ subprojects {
     task allDeps(type: DependencyReportTask) {}
     task allDepInsight(type: DependencyInsightReportTask) {}
 }
-
-dependencyCheck {
-    format = 'ALL'
-    analyzers {
-        nodeEnabled = false
-    }
-}
-check.dependsOn dependencyCheckAggregate
-
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
-}
-
-tasks {
-    dependencyUpdates {
-        rejectVersionIf {
-            isNonStable(it.candidate.version)
-        }
-        checkConstraints = true
-    }
-}
-tasks.build.dependsOn 'dependencyUpdates'
