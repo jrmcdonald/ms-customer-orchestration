@@ -5,7 +5,7 @@ pluginManagement {
         url = 'https://maven.pkg.github.com/jrmcdonald/ms-common'
         credentials {
             username = "jrmcdonald"
-            password = GITHUB_TOKEN ?: System.getenv("GITHUB_TOKEN")
+            password = hasProperty("GITHUB_TOKEN") ? GITHUB_TOKEN : System.getenv("GITHUB_TOKEN")
         }
     }
   }
