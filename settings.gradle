@@ -1,14 +1,14 @@
 pluginManagement {
-  repositories {
-    gradlePluginPortal()
-    maven {
-        url = 'https://maven.pkg.github.com/jrmcdonald/ms-common'
-        credentials {
-            username = "jrmcdonald"
-            password = hasProperty("GITHUB_TOKEN") ? GITHUB_TOKEN : System.getenv("GITHUB_TOKEN")
+    repositories {
+        gradlePluginPortal()
+        maven {
+            url = 'https://maven.pkg.github.com/jrmcdonald/ms-common'
+            credentials {
+                username = "jrmcdonald"
+                password = hasProperty("GITHUB_TOKEN") ? "${GITHUB_TOKEN}" : System.getenv("GITHUB_TOKEN")
+            }
         }
     }
-  }
 }
 
 rootProject.name = 'ms-customer-orchestration'
