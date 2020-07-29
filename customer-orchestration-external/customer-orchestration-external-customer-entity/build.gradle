@@ -1,9 +1,3 @@
-plugins {
-    id 'java'
-    id 'java-library'
-    id 'java-test-fixtures'
-}
-
 dependencies {
     implementation 'com.jrmcdonald:ms-common-ext-spring-reactive-error'
     implementation 'com.jrmcdonald:ms-common-schema-definition'
