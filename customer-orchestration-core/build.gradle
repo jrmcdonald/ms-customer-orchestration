@@ -1,8 +1,3 @@
-plugins {
-    id 'java'
-    id 'java-library'
-}
-
 dependencies {
     api project(':customer-orchestration-external:customer-orchestration-external-customer-entity')
 

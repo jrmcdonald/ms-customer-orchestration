@@ -1,9 +1,3 @@
-plugins {
-    id 'java'
-    id 'java-library'
-    id 'java-test-fixtures'
-}
-
 dependencies {
     implementation project(':customer-orchestration-endpoints:customer-orchestration-rest-api')
 
