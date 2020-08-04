@@ -11,7 +11,8 @@
   },
   "resolutions": {
     "mem": ">=4.0.0",
-    "yargs-parser": ">=18.1.2"
+    "yargs-parser": ">=18.1.2",
+    "dot-prop": ">=5.1.1"
   },
   "scripts": {
     "semantic-release": "semantic-release"
