@@ -25,15 +25,6 @@ allprojects {
     }
 
     configurations {
-        commonPlatform
-        compileOnly.extendsFrom(commonPlatform)
-        annotationProcessor.extendsFrom(commonPlatform)
-        testCompileOnly.extendsFrom(commonPlatform)
-        testAnnotationProcessor.extendsFrom(commonPlatform)
-        implementation.extendsFrom(commonPlatform)
-        testImplementation.extendsFrom(commonPlatform)
-        testFixturesImplementation.extendsFrom(commonPlatform)
-
         [apiElements, runtimeElements].each {
             it.outgoing.artifacts.removeIf { it.buildDependencies.getDependencies(null).contains(jar) }
             it.outgoing.artifact(bootJar)
@@ -56,17 +47,4 @@ allprojects {
             exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         }
     }
-
-    compileJava {
-        options.compilerArgs << "-Werror"
-        options.compilerArgs << "-Xlint:all"
-        options.compilerArgs << "-Xlint:-try"
-        options.compilerArgs << "-Xlint:-processing"
-    }
-
-    test {
-        useJUnitPlatform()
-    }
 }
-
-apply from: "${rootDir}/gradle/dependencies.gradle"
