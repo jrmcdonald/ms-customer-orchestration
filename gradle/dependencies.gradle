@@ -1,4 +1,0 @@
-subprojects {
-    task allDeps(type: DependencyReportTask) {}
-    task allDepInsight(type: DependencyInsightReportTask) {}
-}
