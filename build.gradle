@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'com.jrmcdonald.ms-gradle-baseline' version "${gradleBaselinePluginVerson}"
+jjj    id 'com.jrmcdonald.ms-gradle-baseline' version "${gradleBaselinePluginVerson}"
 }
 
 allprojects {

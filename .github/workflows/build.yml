@@ -96,9 +96,9 @@ jobs:
         run: ./gradlew customer-orchestration-endpoints:customer-orchestration-rest-api:bootBuildImage --imageName build:latest
 
       - name: Docker Scan
-        uses: anchore/scan-action@master
+        uses: anchore/scan-action@v2
         with:
-          image-reference: "build:latest"
+          image: "build:latest"
           fail-build: true
 
       - name: Semantic Release
