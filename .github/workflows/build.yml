@@ -100,6 +100,7 @@ jobs:
         with:
           image: "build:latest"
           fail-build: true
+          severity-cutoff: critical
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
