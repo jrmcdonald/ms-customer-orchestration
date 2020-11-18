@@ -7,7 +7,7 @@
     "gradle-semantic-release-plugin": "^1.4.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
-    "semantic-release": "^17.1.1"
+    "semantic-release": "^17.2.3"
   },
   "resolutions": {
     "mem": ">=4.0.0",
