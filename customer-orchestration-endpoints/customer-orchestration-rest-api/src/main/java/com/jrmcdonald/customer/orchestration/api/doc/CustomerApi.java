@@ -3,6 +3,9 @@ package com.jrmcdonald.customer.orchestration.api.doc;
 import com.jrmcdonald.customer.orchestration.api.model.CustomerRequest;
 import com.jrmcdonald.customer.orchestration.api.model.CustomerResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,10 +28,20 @@ public interface CustomerApi {
     @ApiResponse(responseCode = "500")
     Mono<ResponseEntity<CustomerResponse>> getCustomer();
 
-    @ApiResponse(responseCode = "201", headers = @Header(name = HttpHeaders.LOCATION, description = "URI of the newly created customer account", schema = @Schema(type = "string")))
-    @ApiResponse(responseCode = "401")
-    @ApiResponse(responseCode = "403")
-    @ApiResponse(responseCode = "409")
-    @ApiResponse(responseCode = "500")
+    @Operation(
+            responses = {
+                    @ApiResponse(responseCode = "201", headers = @Header(name = HttpHeaders.LOCATION, description = "URI of the newly created customer account", schema = @Schema(type = "string"))),
+                    @ApiResponse(responseCode = "401"),
+                    @ApiResponse(responseCode = "403"),
+                    @ApiResponse(responseCode = "409"),
+                    @ApiResponse(responseCode = "500")
+            },
+            extensions = @Extension(
+                    name = "x-amazon-apigateway-integration",
+                    properties = {
+                            @ExtensionProperty(name = "lambdaName", value = "authentication"),
+                            @ExtensionProperty(name = "type", value = "aws"),
+                    })
+    )
     Mono<ResponseEntity<CustomerResponse>> createCustomer(@RequestBody CustomerRequest customerRequest, ServerHttpRequest serverHttpRequest);
 }
