@@ -79,15 +79,13 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           export PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          export PR_NUMBER_OPT="-Dsonar.pullrequest.key=${PR_NUMBER}"
-          echo "::set-env name=PR_NUMBER_OPT::${PR_NUMBER_OPT}"
+          echo "PR_NUMBER_OPT=-Dsonar.pullrequest.key=${PR_NUMBER}" >> $GITHUB_ENV
 
       - name: Set Branch Name
         if: github.event_name != 'pull_request'
         run: |
           export BRANCH_NAME=$(git branch --show-current)
-          export BRANCH_NAME_OPT="-Dsonar.branch.name=${BRANCH_NAME}"
-          echo "::set-env name=BRANCH_NAME_OPT::${BRANCH_NAME_OPT}"
+          echo "BRANCH_NAME_OPT=-Dsonar.branch.name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Sonar
         run: ./gradlew sonarqube -Dsonar.login=${{ secrets.SONAR_LOGIN }} ${BRANCH_NAME_OPT} ${PR_NUMBER_OPT} --info
